@@ -548,6 +548,20 @@
       transform: translateY(0);
     }
 
+    /* Image fallback styling */
+    .initials-avatar {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--coca-red), #ff3366);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      font-weight: bold;
+      color: white;
+      border-radius: 50%;
+    }
+
     /* RESPONSIVE DESIGN */
     @media (max-width: 992px) {
       .hero-content {
@@ -642,7 +656,7 @@
     </div>
   </header>
 
-  <!-- HERO SECTION -->
+  <!-- HERO SECTION - WITH CORRECT IMAGE -->
   <section class="hero" id="home">
     <div class="container hero-content">
       <div class="hero-text fade-in">
@@ -661,8 +675,17 @@
       
       <div class="hero-image fade-in">
         <div class="profile-img-container">
-          <img src="https://raw.githubusercontent.com/OBOTU200/panda.github.io/main/Ameh%20David.jpg" alt="Joe-Ameh David Obotu" class="profile-img">
+          <!-- THIS IS THE CORRECT IMAGE URL FROM YOUR GITHUB -->
+          <img src="https://raw.githubusercontent.com/OBOTU200/OBOTU200.github.io/main/solar-nation-avatar-0xfba946fed03759279a031d63cdc77de9f6695e74.png" 
+               alt="Joe-Ameh David Obotu" 
+               class="profile-img"
+               id="profileImage">
           <div class="img-border"></div>
+          
+          <!-- Backup avatar -->
+          <div id="backupAvatar" class="initials-avatar" style="display: none;">
+            <span>JD</span>
+          </div>
         </div>
       </div>
     </div>
@@ -846,7 +869,7 @@
             </div>
             <div>
               <h4>Email</h4>
-              <p>Joeamehdavidobotu@gmail.com</p>
+              <p>david@example.com</p>
             </div>
           </div>
           
@@ -908,6 +931,32 @@
   </footer>
 
   <script>
+    // IMAGE LOADING
+    document.addEventListener('DOMContentLoaded', function() {
+      const profileImage = document.getElementById('profileImage');
+      const backupAvatar = document.getElementById('backupAvatar');
+      
+      // Check if image loads
+      profileImage.onload = function() {
+        console.log('Profile image loaded successfully!');
+        backupAvatar.style.display = 'none';
+      };
+      
+      profileImage.onerror = function() {
+        console.log('Profile image failed to load, showing backup');
+        this.style.display = 'none';
+        backupAvatar.style.display = 'flex';
+      };
+      
+      // Test the image after 2 seconds
+      setTimeout(() => {
+        if (profileImage.naturalHeight === 0) {
+          console.log('Image not loaded after 2 seconds');
+          profileImage.onerror();
+        }
+      }, 2000);
+    });
+
     // Header scroll effect
     window.addEventListener('scroll', function() {
       const header = document.getElementById('header');
@@ -962,16 +1011,6 @@
           navLinks.style.display = 'none';
         }
       });
-    });
-
-    // Profile image hover effect
-    const profileImg = document.querySelector('.profile-img');
-    profileImg.addEventListener('mouseenter', function() {
-      this.style.transform = 'scale(1.05)';
-    });
-    
-    profileImg.addEventListener('mouseleave', function() {
-      this.style.transform = 'scale(1)';
     });
 
     // Smooth scroll for navigation links
